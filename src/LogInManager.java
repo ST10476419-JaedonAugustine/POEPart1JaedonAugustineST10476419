@@ -12,6 +12,7 @@ import java.util.Scanner;
  *
  * @author jaedon
  */
+//#
 public class LogInManager
 {
 
