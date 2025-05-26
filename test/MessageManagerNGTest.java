@@ -96,4 +96,4 @@ public class MessageManagerNGTest
         assertTrue(output.contains(validRecipient), "Output should include the recipient");
         assertTrue(output.contains(validMessage), "Output should include the message text");
     }
-}
+}//

@@ -86,7 +86,7 @@ public class MessageUI extends javax.swing.JFrame
     {//GEN-HEADEREND:event_SignOutActionPerformed
         Spobj.setVisible(true);
     }//GEN-LAST:event_SignOutActionPerformed
-
+//
     private void SentMessageActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_SentMessageActionPerformed
     {//GEN-HEADEREND:event_SentMessageActionPerformed
         VMobj.setVisible(true);
