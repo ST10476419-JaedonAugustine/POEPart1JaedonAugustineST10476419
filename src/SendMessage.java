@@ -1,6 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;  //
+import javax.swing.*;  
 
 
 public class SendMessage extends JFrame {

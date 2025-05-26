@@ -19,7 +19,7 @@ public class MessageManager {
         this.messageID = generateMessageID();      
         this.messageHash = createMessageHash();    
     }
-//
+
     //Generates a random 10-digit message ID.
      
     private String generateMessageID() {
