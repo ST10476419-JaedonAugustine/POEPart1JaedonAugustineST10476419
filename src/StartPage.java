@@ -1,5 +1,7 @@
 
-import javax.swing.JFrame;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -15,11 +17,9 @@ public class StartPage extends javax.swing.JFrame
     /**
      * Creates new form StartPage
      */
-    public StartPage()
-    {
-        initComponents();
-    }
-
+    private JButton btnSendMessage;
+    private JButton btnViewMessages;
+    private JPanel startPanel;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

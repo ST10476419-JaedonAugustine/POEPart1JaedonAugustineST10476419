@@ -13,7 +13,6 @@ public class MessageUI extends javax.swing.JFrame
 {
 
     //Creates new form MessageUI
-     
     public MessageUI()
     {
         initComponents();
@@ -86,7 +85,7 @@ public class MessageUI extends javax.swing.JFrame
     {//GEN-HEADEREND:event_SignOutActionPerformed
         Spobj.setVisible(true);
     }//GEN-LAST:event_SignOutActionPerformed
-//
+
     private void SentMessageActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_SentMessageActionPerformed
     {//GEN-HEADEREND:event_SentMessageActionPerformed
         VMobj.setVisible(true);
@@ -128,7 +127,7 @@ public class MessageUI extends javax.swing.JFrame
             }
 
             // Create message manager object
-            MessageManager manager = new MessageManager(i, recipient, messageText);
+            MessageManager manager = new MessageManager(String.valueOf(i), recipient, messageText);
 
             if (!manager.checkRecipientCell())
             {
@@ -180,11 +179,7 @@ public class MessageUI extends javax.swing.JFrame
      */
     public static void main(String args[])
     {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        
         try
         {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
