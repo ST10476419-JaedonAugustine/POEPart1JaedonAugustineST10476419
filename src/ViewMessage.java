@@ -1,106 +1,180 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+import javax.swing.*;
+import java.awt.event.*;
+import java.util.ArrayList;
 
-/**
- *
- * @author jaedon
- */
-public class ViewMessage extends javax.swing.JFrame
-{
+public class ViewMessage extends javax.swing.JFrame {
 
-    //Creates new form ViewMessage
-     
-    public ViewMessage()
-    {
-        initComponents();
+    // Arrays to store message data retrieved from MessageManager
+    ArrayList<String> sentMessages = new ArrayList<>();
+    ArrayList<String> disregardedMessages = new ArrayList<>(); // Not currently used
+    ArrayList<String> storedMessages = new ArrayList<>();      // Not currently used
+    ArrayList<String> messageHashes = new ArrayList<>();
+    ArrayList<String> messageIDs = new ArrayList<>();
+    ArrayList<String> recipients = new ArrayList<>();
+
+    // GUI components
+    private JTextArea outputArea;
+    private JButton btnDisplaySent, btnLongestMessage, btnSearchByID,
+                    btnSearchByRecipient, btnDeleteByHash, btnReport;
+
+    // Constructor initializes GUI and loads messages
+    public ViewMessage() {
+        initComponents();           // Build GUI
+        loadMessagesFromManager(); // Load messages into local arrays on startup
     }
 
-
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
-
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-
+    // Initializes and arranges all GUI components
+    private void initComponents() {
+        setTitle("View Messages");
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setLocation(new java.awt.Point(500, 300));
-        setMinimumSize(new java.awt.Dimension(400, 350));
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        setSize(600, 400);
+        setLocationRelativeTo(null); // Center the window
+        setLayout(null);             // Absolute positioning (not recommended for large GUIs)
 
-        jLabel1.setText("This feature is coming soon");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 140, -1, -1));
+        // Initialize buttons
+        btnDisplaySent = new JButton("Display Sent");
+        btnLongestMessage = new JButton("Longest Message");
+        btnSearchByID = new JButton("Search by ID");
+        btnSearchByRecipient = new JButton("Search by Recipient");
+        btnDeleteByHash = new JButton("Delete by Hash");
+        btnReport = new JButton("Show Report");
 
-        jButton1.setText("Signout");
-        jButton1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 200, -1, -1));
+        // Set button positions and sizes
+        btnDisplaySent.setBounds(20, 20, 150, 30);
+        btnLongestMessage.setBounds(180, 20, 150, 30);
+        btnSearchByID.setBounds(340, 20, 150, 30);
+        btnSearchByRecipient.setBounds(20, 60, 150, 30);
+        btnDeleteByHash.setBounds(180, 60, 150, 30);
+        btnReport.setBounds(340, 60, 150, 30);
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+        // Add buttons to the JFrame
+        add(btnDisplaySent);
+        add(btnLongestMessage);
+        add(btnSearchByID);
+        add(btnSearchByRecipient);
+        add(btnDeleteByHash);
+        add(btnReport);
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
-    {//GEN-HEADEREND:event_jButton1ActionPerformed
-        StartPage SPobj = new StartPage();
-        
-        SPobj.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        // Text area for displaying output, inside a scroll pane
+        outputArea = new JTextArea();
+        JScrollPane scrollPane = new JScrollPane(outputArea);
+        scrollPane.setBounds(20, 100, 550, 250);
+        add(scrollPane);
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[])
-    {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try
-        {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
-            {
-                if ("Nimbus".equals(info.getName()))
-                {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex)
-        {
-            java.util.logging.Logger.getLogger(ViewMessage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex)
-        {
-            java.util.logging.Logger.getLogger(ViewMessage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex)
-        {
-            java.util.logging.Logger.getLogger(ViewMessage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex)
-        {
-            java.util.logging.Logger.getLogger(ViewMessage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                new ViewMessage().setVisible(true);
-            }
-        });
+        // Define button actions using lambda expressions
+        btnDisplaySent.addActionListener(e -> displaySentMessages());
+        btnLongestMessage.addActionListener(e -> showLongestMessage());
+        btnSearchByID.addActionListener(e -> searchByID());
+        btnSearchByRecipient.addActionListener(e -> searchByRecipient());
+        btnDeleteByHash.addActionListener(e -> deleteByHash());
+        btnReport.addActionListener(e -> showReport());
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    // End of variables declaration//GEN-END:variables
+    // Loads messages from MessageManager into local lists for GUI use
+    private void loadMessagesFromManager() {
+        // Clear previous data
+        sentMessages.clear();
+        recipients.clear();
+        messageIDs.clear();
+        messageHashes.clear();
+
+        // Loop through messages and extract needed details
+        for (MessageManager msg : MessageManager.messages) {
+            sentMessages.add(msg.getMessageText());
+            recipients.add(msg.getRecipient());
+            messageIDs.add(msg.getMessageID());
+            messageHashes.add(msg.generateMessageHash());
+        }
+
+        // Display messages immediately
+        displaySentMessages();
+    }
+
+    // Display all sent messages in the output area
+    private void displaySentMessages() {
+        if (sentMessages.isEmpty()) {
+            outputArea.setText("No messages to display.");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder("Sent Messages:\n");
+        for (int i = 0; i < sentMessages.size(); i++) {
+            sb.append("To: ").append(recipients.get(i)).append(" - ")
+              .append(sentMessages.get(i)).append("\n");
+        }
+        outputArea.setText(sb.toString());
+    }
+
+    // Finds and displays the longest message from the list
+    private void showLongestMessage() {
+        String longest = "";
+        for (String msg : sentMessages) {
+            if (msg.length() > longest.length()) {
+                longest = msg;
+            }
+        }
+        outputArea.setText("Longest Message:\n" + longest);
+    }
+
+    // Search for a message by its unique ID and display it
+    private void searchByID() {
+        String inputID = JOptionPane.showInputDialog(this, "Enter Message ID:");
+        for (int i = 0; i < messageIDs.size(); i++) {
+            if (messageIDs.get(i).equals(inputID)) {
+                outputArea.setText("Message Found:\nRecipient: " + recipients.get(i)
+                        + "\nMessage: " + sentMessages.get(i));
+                return;
+            }
+        }
+        outputArea.setText("Message ID not found.");
+    }
+
+    // Search for all messages sent to a specific recipient
+    private void searchByRecipient() {
+        String recipient = JOptionPane.showInputDialog(this, "Enter Recipient Name:");
+        StringBuilder sb = new StringBuilder("Messages to " + recipient + ":\n");
+        boolean found = false;
+
+        for (int i = 0; i < recipients.size(); i++) {
+            if (recipients.get(i).equalsIgnoreCase(recipient)) {
+                sb.append("- ").append(sentMessages.get(i)).append("\n");
+                found = true;
+            }
+        }
+        outputArea.setText(found ? sb.toString() : "No messages to that recipient.");
+    }
+
+    // Delete a message from all arrays based on its hash
+    private void deleteByHash() {
+        String hash = JOptionPane.showInputDialog(this, "Enter Message Hash:");
+        for (int i = 0; i < messageHashes.size(); i++) {
+            if (messageHashes.get(i).equals(hash)) {
+                // Remove all data at the matched index
+                sentMessages.remove(i);
+                recipients.remove(i);
+                messageIDs.remove(i);
+                messageHashes.remove(i);
+                outputArea.setText("Message deleted successfully.");
+                return;
+            }
+        }
+        outputArea.setText("Message hash not found.");
+    }
+
+    // Show a full report of all sent messages, including metadata
+    private void showReport() {
+        StringBuilder sb = new StringBuilder("Full Sent Message Report:\n");
+        for (int i = 0; i < sentMessages.size(); i++) {
+            sb.append("ID: ").append(messageIDs.get(i)).append("\n")
+              .append("Recipient: ").append(recipients.get(i)).append("\n")
+              .append("Hash: ").append(messageHashes.get(i)).append("\n")
+              .append("Message: ").append(sentMessages.get(i)).append("\n\n");
+        }
+        outputArea.setText(sb.toString());
+    }
+
+    // Main method launches the GUI on the Event Dispatch Thread
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new ViewMessage().setVisible(true));
+    }
 }
